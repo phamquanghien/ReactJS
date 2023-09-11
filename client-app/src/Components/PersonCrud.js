@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function Person() {
+function StudentCrud() {
 
 const [personID, setPersonID] = useState("");
 const [fullName, setFullName] = useState("");
@@ -9,17 +9,18 @@ const [address, setAddress] = useState("");
 const [persons, setPerson] = useState([]);
  
   useEffect(() => {
-    (async () => await getAllPerson())();
+    (async () => await Load())();
   }, []);
  
-  async function getAllPerson() {
+  async function Load() {
     
     const result = await axios.get("http://localhost:5209/get-all-person");
     setPerson(result.data);
     console.log(result.data);
   }
  
-  async function createPerson(event) {
+  async function save(event) {
+   
     event.preventDefault();
     try {
       await axios.post("http://localhost:5209/create-person", {
@@ -28,34 +29,36 @@ const [persons, setPerson] = useState([]);
         address: address,
        
       });
-      alert("Person Registation Successfully");
+      alert("Student Registation Successfully");
           setPersonID("");
           setFullName("");
           setAddress("");
-      getAllPerson();
+       
+     
+      Load();
     } catch (err) {
       alert(err);
     }
   }
 
-  async function editPerson(persons) {
+  async function editStudent(persons) {
     setFullName(persons.fullName);
     setAddress(persons.address);
     setPersonID(persons.personID);
   }
  
 
-  async function deletePerson(id) {
+  async function DeleteStudent(id) {
   await axios.delete("http://localhost:5209/delete-person/" + id);
    alert("Employee deleted Successfully");
    setPersonID("");
    setFullName("");
    setAddress("");
-   getAllPerson();
+   Load();
   }
  
 
-  async function updatePerson(event) {
+  async function update(event) {
     event.preventDefault();
     try {
 
@@ -72,7 +75,7 @@ const [persons, setPerson] = useState([]);
       setFullName("");
       setAddress("");
      
-      getAllPerson();
+      Load();
     } catch (err) {
       alert(err);
     }
@@ -119,10 +122,10 @@ const [persons, setPerson] = useState([]);
             />
           </div>
           <div>
-            <button class="btn btn-primary mt-4" onClick={createPerson}>
+            <button class="btn btn-primary mt-4" onClick={save}>
               Register
             </button>
-            <button class="btn btn-warning mt-4" onClick={updatePerson}>
+            <button class="btn btn-warning mt-4" onClick={update}>
               Update
             </button>
           </div>
@@ -153,14 +156,14 @@ const [persons, setPerson] = useState([]);
                   <button
                     type="button"
                     class="btn btn-warning"
-                    onClick={() => editPerson(person)}
+                    onClick={() => editStudent(person)}
                   >
                     Edit
                   </button>
                   <button
                     type="button"
                     class="btn btn-danger"
-                    onClick={() => deletePerson(person.personID)}
+                    onClick={() => DeleteStudent(person.personID)}
                   >
                     Delete
                   </button>
@@ -175,4 +178,4 @@ const [persons, setPerson] = useState([]);
     );
   }
   
-  export default Person;
+  export default StudentCrud;
