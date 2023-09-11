@@ -33,7 +33,7 @@ function Person() {
         fullName: fName,
         address: address,
       });
-      alert("Create person successfully!");
+      alert("Create successful person!");
       setPersonNull();
       getAllPerson();
     } catch (err) {
@@ -42,7 +42,7 @@ function Person() {
   }
   async function deletePerson(id) {
     await axios.delete("http://localhost:5209/delete-person/" + id);
-    alert("Delete person successfully!");
+    alert("Delete successful person!");
     setPersonNull();
     getAllPerson();
   }
@@ -56,7 +56,7 @@ function Person() {
           address: address,
         }
       );
-      alert("Update person successfully!");
+      alert("Update successful person!");
       setPersonNull();
       getAllPerson();
     } catch (err) {
