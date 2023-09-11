@@ -1,67 +1,68 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function StudentCrud() {
+function Person() {
 
-const [personID, setPersonID] = useState("");
-const [fullName, setFullName] = useState("");
+const [psID, setPersonID] = useState("");
+const [fName, setFullName] = useState("");
 const [address, setAddress] = useState("");
 const [persons, setPerson] = useState([]);
  
   useEffect(() => {
-    (async () => await Load())();
+    (async () => await getAllPerson())();
   }, []);
  
-  async function Load() {
+  async function getAllPerson() {
     
     const result = await axios.get("http://localhost:5209/get-all-person");
     setPerson(result.data);
     console.log(result.data);
   }
  
-  async function save(event) {
+  async function createPerson(event) {
     event.preventDefault();
     try {
       await axios.post("http://localhost:5209/create-person", {
-        personID: personID,
-        fullName: fullName,
+        personID: psID,
+        fullName: fName,
         address: address,
+       
       });
-      alert("Student Registation Successfully");
+      alert("Person Registation Successfully");
           setPersonID("");
           setFullName("");
           setAddress("");
-      Load();
+      getAllPerson();
     } catch (err) {
       alert(err);
     }
   }
 
-  async function editStudent(persons) {
+  async function editPerson(persons) {
     setFullName(persons.fullName);
     setAddress(persons.address);
     setPersonID(persons.personID);
   }
  
 
-  async function DeleteStudent(id) {
+  async function deletePerson(id) {
   await axios.delete("http://localhost:5209/delete-person/" + id);
    alert("Employee deleted Successfully");
    setPersonID("");
    setFullName("");
    setAddress("");
-   Load();
+   getAllPerson();
   }
  
 
-  async function update(event) {
+  async function updatePerson(event) {
     event.preventDefault();
     try {
 
-  await axios.put("http://localhost:5209/update-person/" + personID,
+  await axios.put("http://localhost:5209/update-person/" + psID,
         {
-          personID: personID,
-          fullName: fullName,
+          personID: psID,
+          fullName: fName,
           address: address,
 
         }
@@ -71,7 +72,7 @@ const [persons, setPerson] = useState([]);
       setFullName("");
       setAddress("");
      
-      Load();
+      getAllPerson();
     } catch (err) {
       alert(err);
     }
@@ -79,7 +80,7 @@ const [persons, setPerson] = useState([]);
 
     return (
       <div>
-        <h1>Student Details</h1>
+        <h1>Person list</h1>
       <div class="container mt-4">
         <form>
         <label>PersonID</label>
@@ -88,7 +89,7 @@ const [persons, setPerson] = useState([]);
               type="text"
               class="form-control"
               id="personID"
-              value={personID}
+              value={psID}
               onChange={(event) => {
                 setPersonID(event.target.value);
               }}
@@ -99,7 +100,7 @@ const [persons, setPerson] = useState([]);
               type="text"
               class="form-control"
               id="fullName"
-              value={fullName}
+              value={fName}
               onChange={(event) => {
                 setFullName(event.target.value);
               }}
@@ -118,10 +119,10 @@ const [persons, setPerson] = useState([]);
             />
           </div>
           <div>
-            <button class="btn btn-primary mt-4" onClick={save}>
+            <button class="btn btn-primary mt-4" onClick={createPerson}>
               Register
             </button>
-            <button class="btn btn-warning mt-4" onClick={update}>
+            <button class="btn btn-warning mt-4" onClick={updatePerson}>
               Update
             </button>
           </div>
@@ -152,14 +153,14 @@ const [persons, setPerson] = useState([]);
                   <button
                     type="button"
                     class="btn btn-warning"
-                    onClick={() => editStudent(person)}
+                    onClick={() => editPerson(person)}
                   >
                     Edit
                   </button>
                   <button
                     type="button"
                     class="btn btn-danger"
-                    onClick={() => DeleteStudent(person.personID)}
+                    onClick={() => deletePerson(person.personID)}
                   >
                     Delete
                   </button>
@@ -174,4 +175,4 @@ const [persons, setPerson] = useState([]);
     );
   }
   
-  export default StudentCrud;
+  export default Person;
