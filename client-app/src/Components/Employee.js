@@ -64,7 +64,7 @@ function Employee() {
     async function deleteEmployee(event) {
         event.preventDefault();
         await axios.delete("http://localhost:5209/delete-employee" + psID);
-        alert("Update successful employee!")
+        alert("Delete successful employee!")
         setEmployeeNull();
         getAllEmployee();
     }
